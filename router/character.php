@@ -9,7 +9,7 @@
     $method = $_SERVER["REQUEST_METHOD"]; // Estou coletando o método de solicitação que foi enviada para a API.
     $endpoint = $_GET["endpoint"]; // Estou identificando a rota, para onde os dados enviados para esta API devem ir.
 
-    // Esse arquivo aceita apenas requisições dos métodos GET, POST e DELETE, então qualquer requisição com outro método deve dar erro
+    // Esse arquivo aceita apenas requisições dos métodos GET, POST, PUT e DELETE, então qualquer requisição com outro método deve dar erro
     if($method === "GET"){
         
         // Verificando os endpoints e conferindo se há a presença do ID na URL
@@ -61,13 +61,18 @@
     
                 echo json_encode([
                     "status" => "error",
-                    "msg" => "Não foi possível atualizar os dados.",
+                    "msg" => "Não foi possível atualizar os dados devido a ausência do ID.",
                 ]);
-    
-                exit;
-    
-            }
 
+                
+                exit;
+                
+            }
+            
+            $data = json_decode(file_get_contents("php://input"), true); 
+            
+            atualizar($id, $data);
+            
         }else{
 
             echo json_encode([
@@ -79,8 +84,6 @@
 
         }
 
-        atualizar($id);
-
     }else if($method === "DELETE"){
 
         if($endpoint === "characters"){
@@ -91,7 +94,7 @@
     
                 echo json_encode([
                     "status" => "error",
-                    "msg" => "Não foi possível excluir os dados.",
+                    "msg" => "Não foi possível excluir os dados devido a ausência do ID.",
                 ]);
     
                 exit;

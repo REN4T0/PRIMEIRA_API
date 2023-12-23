@@ -24,7 +24,8 @@
 
             echo json_encode([
                 "status" => "error",
-                "msg" => "Não foi possível armazenar os dados - $error",
+                "msg" => "Ocorreu um erro ao armazenar os dados",
+                "error" => $error
             ]);
         }
 
@@ -44,6 +45,7 @@
             ]);
         }
     }
+
 
 
 
@@ -82,7 +84,8 @@
 
             $response = [
                 "status" => "error",
-                "msg" => "Não foi possível buscar os dados - $error"
+                "msg" => "Ocorreu um erro ao buscar os dados",
+                "error" => $error
             ];
 
         }
@@ -125,7 +128,8 @@
 
             echo json_encode([
                 "status" => "error",
-                "msg" => "Não foi possível coletar os dados do banco - $error"
+                "msg" => "Ocorreu um erro ao buscar os dados",
+                "error" => $error
             ]);
 
         }
@@ -135,15 +139,42 @@
 
 
 
-    function updateById($id){
+
+    // Função para atualizar os dados
+    function updateById($id, $data){
         global $conn;
 
+        $name = $data["name"];
+        $age = $data["age"];
+        $gender = $data["gender"];
+        $powers = $data["powers"];
+        $profile = $data["profile"];
+        $thumbnail = $data["thumbnail"];
+
+        try{
+
+            $stmt = $conn->prepare("UPDATE characters SET `name` = ?, age = ?, gender = ?, powers = ?, `profile` = ?, imgPath = ? WHERE id = ?");
+            $stmt->bind_param("sissssi", $name, $age, $gender, $powers, $profile, $thumbnail, $id);
+            $stmt->execute();
+
+            if($stmt->affected_rows){
+                echo json_encode([
+                    "status" => "success",
+                    "msg" => "Dados atualizados com sucesso",
+                ]);
+            }
+
+        }catch(Exception $error){
+
             echo json_encode([
-                "status" => "success",
-                "msg" => "Parei aqui...",
+                "status" => "error",
+                "msg" => "Ocorreu um erro ao atualizar os dados",
+                "error" => $error
             ]);
 
+        }
     }
+
 
 
 
@@ -164,7 +195,8 @@
             
             echo json_encode([
                 "status" => "error",
-                "msg" => "Não foi possível excluir os dados - $error"
+                "msg" => "Ocorre um erro ao excluir os dados",
+                "error" => $error
             ]);
 
             exit;
@@ -181,11 +213,10 @@
 
             echo json_encode([
                 "status" => "error",
-                "msg" => "Não foi possível deletar os dados do banco devido a algum erro desconhecido..."
+                "msg" => "Não foi possível excluir os dados do banco devido a algum erro desconhecido..."
             ]);
 
         }
 
     }
-
 ?>
