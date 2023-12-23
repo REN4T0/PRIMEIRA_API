@@ -9,4 +9,19 @@
 
         findAll();
     }
+
+    function buscarEspecifico($id){
+
+        findById($id);
+    }
+
+    function excluir($id){
+
+        deleteById($id);
+    }
+
+    function atualizar($id){
+
+        updateById($id);
+    }
 ?>
