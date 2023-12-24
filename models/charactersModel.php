@@ -98,7 +98,7 @@
 
 
     // Função para buscar por um registro específico com base em um ID
-    function findById($id){
+    function findById($id, $task){
 
         global $conn;
 
@@ -107,22 +107,45 @@
             $stmt = $conn->prepare("SELECT * FROM characters WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
-
             $result = $stmt->get_result();
-            $row = mysqli_fetch_assoc($result);
 
-            echo json_encode([
-                "status" => "success",
-                "data" => [
-                    "_id" => $row["id"],
-                    "name" => $row["name"],
-                    "age" => $row["age"],
-                    "gender" => $row["gender"],
-                    "powers" => $row["powers"],
-                    "profile" => $row["profile"],
-                    "thumbnail" => $row["imgPath"],
-                ]
-            ]);
+            // Verificando se o ID procurado existe no banco de dados
+            if(!mysqli_num_rows($result) > 0){
+
+                // Se essa função foi solicitada pela função de atualizar dados no banco, uma resposta será retornada
+                if($task === "verifica"){
+                    return false;
+                }
+
+                echo json_encode([
+                    "status" => "error",
+                    "msg" => "Esse personagem não existe",
+                ]);
+
+
+            }else{
+
+                // Se essa função foi solicitada pela função de atualizar dados no banco, uma resposta será retornada
+                if($task === "verifica"){
+                    return true;
+                }
+
+                $row = mysqli_fetch_assoc($result);
+    
+                echo json_encode([
+                    "status" => "success",
+                    "data" => [
+                        "_id" => $row["id"],
+                        "name" => $row["name"],
+                        "age" => $row["age"],
+                        "gender" => $row["gender"],
+                        "powers" => $row["powers"],
+                        "profile" => $row["profile"],
+                        "thumbnail" => $row["imgPath"],
+                    ]
+                ]);
+
+            }
 
         }catch(Exception $error){
 
@@ -142,6 +165,7 @@
 
     // Função para atualizar os dados
     function updateById($id, $data){
+
         global $conn;
 
         $name = $data["name"];
