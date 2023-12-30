@@ -1,7 +1,7 @@
 <?php
-    $hostname = "localhost";
-    $username = "root";
-    $password = "";
+    $hostname = "api-server2.mysql.database.azure.com";
+    $username = "Bazinga346";
+    $password = "}6sh>JZ[w/GN!5yfiLk9C_";
     $database = "newjourneys";
 
     // Tentando conectar no banco de dados
