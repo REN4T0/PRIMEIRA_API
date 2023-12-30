@@ -1,0 +1,24 @@
+            - name: Azure App Configuration Sync
+  uses: Azure/AppConfiguration-Sync@v1.1.3
+  with:
+    # Path to the configuration file in the repo, relative to the repo root. Also supports glob patterns and multiple files
+    configurationFile: 
+    # Format of the configuration file. Valid values are: json, yaml, properties
+    format: 
+    # Connection string for the App Configuration instance
+    connectionString: 
+    # Separator used when flattening the configuration file to key-value pairs
+    separator: 
+    # Specifies whether to use a strict sync which will make the App Configuration instance exactly match the configuration file (deleting key-values not in the configuration file). Defaults to false
+    strict: # optional
+    # Prefix that will be added to the front of the keys
+    prefix: # optional
+    # Label to use when setting the key-value pairs. If not specified, a null label will be used
+    label: # optional
+    # Max depth (positive number) for flattening the configuration file
+    depth: # optional
+    # Stringified form of a JSON object with the following shape: { [propertyName: string]: string; }
+    tags: # optional
+    # Content type associated with the values
+    contentType: # optional
+          
