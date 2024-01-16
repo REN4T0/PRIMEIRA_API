@@ -6,7 +6,7 @@
 
     $hostname="new-journeys.mysql.database.azure.com";
     $username="newjourney";
-    $password="Renato19112005!";
+    $password="Renato123!";
     $database = "newjourneys";
     $port = 3306;
 
